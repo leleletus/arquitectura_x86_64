@@ -11,3 +11,4 @@ for ((i=1;i<6;i++)) #doble parentesis para que use mecanismo de c
 do
     echo "Ciclo iterativo número $i"
 done
+
