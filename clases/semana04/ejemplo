@@ -1,0 +1,92 @@
+usaremos el intel
+//dibujamos una RAM
+
+//wiki/leguaje assembler
+
+
+section .data  //iniciamos la parte donde ponemos variables
+varl dd 40  // como su apodo
+var2 dd 20 // guarda su valor en una posicion de la ram ejemplo 0x1234
+var3 dd 30 // al usar dd es para 32 bits = 4 bytes
+
+section .text
+global _start //necesario para que no salga warning
+_start:
+mov ecx, [varl]  // lo mismo que mov ecx, [0x1234]    hara que tenga el valor de lo que hay dentro de esa posicion de memoria (ecx= 40)
+cmp ecx, [var2] // compara ecx con 20 (comp ecx, [0x1238]  )   comparar es aritmeticamente restar
+jg check_third_var //jump gradier (salta si es mayor) a la etiqueta check_third__var   (en este caso 40 al ser mayor a 20 si salta)
+mov ecx, [var2] //
+check_third_var: // todos con : son un apodo de la direccion de memoria a las instrucciones
+cmp ecx, [var3] // compara lo que tiene ecx con var3= 30
+jg _exit // (mejor es jge = jump grader or iqual) si es mayor salta a exit
+mov ecx, [var3]
+_exit:
+mov eax, 1
+mov ebx, ecx
+int 80h // interrupcion para llamar al sistema  windows?
+
+// que hace? te calcula el mayor munero de 3
+
+
+
+
+; ejemplooooo
+void vec_sum(int* a, int* b, int* c, int N){
+    for(int i = 0; i < N; i++){ // ponerle while para practicar
+        c[i] = a[i] + b[i]; // practicar cambiandole por +,-,*
+    }
+}
+
+
+tomaremos como: ECX=2 
+
+0000000000000000 <vec_sum>:
+   0:	f3 0f 1e fa          	endbr64    ; sirve para comentar
+   4:	31 c0                	xor    eax,eax  ;// por exclusivo bit a bit,    inicializa en 0 al xor al mismo
+   6:	39 c1                	cmp    ecx,eax ;// compara 0 y 2
+   8:	7e 11                	jle    1b <vec_sum+0x1b> ;// no salta solo pasa
+   a:	44 8b 04 86          	mov    r8d,DWORD PTR [rsi+rax*4] ;// r8d= a[0] .dword es de 32 bits (r8d se ve la asignar el valor del puntero(ptr) de a[0]) (si no pongo dword me lo completa el gcc)
+   e:	44 03 04 87          	add    r8d,DWORD PTR [rdi+rax*4] ;// hace r8d=r8d + b[0] ---- que seria r8d = a[0] + b[0]   
+  12:	44 89 04 82          	mov    DWORD PTR [rdx+rax*4],r8d ;//
+  16:	48 ff c0             	inc    rax ;// incremento rax --- rax=1
+  19:	eb eb                	jmp    6 <vec_sum+0x6> ;// saltas a linea 6 ( al comparador) 2,1   --- 2 es menor o igual a 1? entonccesm vuelve a hacer todo
+  1b:	c3                   	ret    
+
+;// para cuando i vale 1
+   6:	39 c1                	cmp    ecx,eax ;// 2,1   --- 2 es menor o igual a 1? entonccesm vuelve a hacer todo
+   8:	7e 11                	jle    1b <vec_sum+0x1b> ;// no salta solo pasa
+   a:	44 8b 04 86          	mov    r8d,DWORD PTR [rsi+rax*4] ;// r8d= a[1]
+   e:	44 03 04 87          	add    r8d,DWORD PTR [rdi+rax*4] ;// hace r8d=r8d + b[1] ---- que seria r8d = a[1] + b[1]   
+  12:	44 89 04 82          	mov    DWORD PTR [rdx+rax*4],r8d ;// c[1] =r8d
+  16:	48 ff c0             	inc    rax ;// incremento rax --- rax=2
+  19:	eb eb                	jmp    6 <vec_sum+0x6> ;// saltas a linea 6 ( al comparador) 2,2   --- 2 es menor o igual a 2? entonccesm vuelve a hacer todo
+
+
+
+
+;//ejemplo 2
+
+
+section .data
+    mesage db "hello wolrd",10
+    len equ $ - message // dolar da el mismo numero al que esta la posicion de memoria, ( es una representacion de la direccion de meoria en ese momento)
+    //len va a ser igual a dolar - message (cantidad de elementos) porque al restar las direcciones de memoria me da el numero de elementos
+
+; segmento de texto
+section .text   global _start
+
+_star:
+;llamada al sistema
+;rax
+;rdi
+;rsu
+;rdx
+
+
+
+syscall
+
+
+;//codigo asci maximo 1 byte
+
+//syscall me siver, hacer una llamada
