@@ -1,4 +1,5 @@
-;nasm -f elf64 -g test.asm -o test.o && ld test.o -o test && ./test
+;nasm -f elf64 -g test2.asm -o test2.o && ld test2.o -o test2 && ./test2
+;gdb
 
 section .data
     arreglo dq 45,250,1000 ; 64 bits = 8bytes
@@ -19,8 +20,8 @@ _start: ;
     mov r10, 8
     div r10   ; rax=len verdadero
 lazo:
-    mov rax, [arreglo+8*rcx]  ;
-    add r8,rax
+    mov rbx, [arreglo+8*rcx]  ;usar b en vez de a cuando usamos div y mul para no tener problemas 
+    add r8,rbx
     inc rcx ; incremento
     cmp rcx,r9
     jnz lazo ; si no es 0
@@ -35,3 +36,4 @@ _exit: ;(salgo del programa)
 	mov rdi, 0
 	syscall
     
+;debe salir 431
