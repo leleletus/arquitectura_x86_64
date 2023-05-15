@@ -1,0 +1,116 @@
+
+float 32 bits
+double 65 bits
+
+Los XMM son de 128 bits,
+pero en los últimos procesadores son de 256 bits.
+
+
+xmm0 xmm15
+
+posición de memoria a un registro,
+y de un registro a una posición de memoria 
+y de un registro a otro registro
+movss para 32bits(float)
+movsd para 64 bits (double)
+
+
+    movss xmm0, [a]     ; mover el valor en a al registro xmm0
+    movsd [b], xmm1     ; mover el valor en el registro xmm1 a b
+    movss xmm2, xmm0    ; mover el valor en xmm0 a xmm2
+	
+
+
+	cvtss2sd xmm0, [x]  ; convertir el float en x a double en xmm0
+	cvtsd2ss xmm0, xmm0 ; el float en xmm0 a double en xmm0
+	
+	
+	addss xmm0, [a] ; xmm0 <- xmm0 + [a] (float)
+	addss xmm0, xmm1 ; xmm0 <- xmm0 + xmm1 (float)
+	addsd xmm0, [b] ; xmm0 <- xmm0 + [b] (double)
+	addsd xmm0, xmm1 ; xmm0 <- xmm0 + xmm1 (double)
+	subss xmm0, [a] ; xmm0 <- xmm0 - [a] (float)
+	subss xmm0, xmm1 ; xmm0 <- xmm0 - xmm1 (float)
+	subsd xmm0, [b] ; xmm0 <- xmm0 - [b] (double)
+	subsd xmm0, xmm1 ; xmm0 <- xmm0 - xmm1 (double)
+	mulss xmm0, [a] ; xmm0 <- xmm0 * [a] (float)
+	mulss xmm0, xmm1 ; xmm0 <- xmm0 * xmm1 (float)
+	mulsd xmm0, [b] ; xmm0 <- xmm0 * [b] (double)
+	mulsd xmm0, xmm1 ; xmm0 <- xmm0 * xmm1 (double)
+	divss xmm0, [a] ; xmm0 <- xmm0 / [a] (float)
+	divss xmm0, xmm1 ; xmm0 <- xmm0 / xmm1 (float)
+	divsd xmm0, [b] ; xmm0 <- xmm0 / [b] (double)
+	divsd xmm0, xmm1 ; xmm0 <- xmm0 / xmm1 (double)
+	sqrtss xmm0, [a] ; xmm0 <- ([a])^0.5 (float)
+	sqrtss xmm0, xmm1 ; xmm0 <- (xmm1)^0.5 (float)
+	sqrtsd xmm0, [b] ; xmm0 <- ([b])^0.5 (double)
+	sqrtsd xmm0, xmm1 ; xmm0 <- (xmm1)^0.5 (double)
+	
+	
+	
+	ucomiss Rxmm, op2 ; registro y el otro registro o [pos_mem]
+	ucomisd Rxmm, op2
+	
+	je label ; jump equal si op1 == op2
+	jne label ; jump not equal si op1 != op2
+	jb label ; jump below than si op1 < op2
+	jbe label ; jump below or equal si op1 <= op2
+	ja label ; jump above than si op1 > op2
+	jae label ; jump above or equal si op1 >= op2
+	
+	
+	rax como registro para el valor de retorno para enteros y xmm0 para coma flotante.
+	
+	Argumentos:
+	
+	Enteros:	Flotante
+	rdi			xmm0
+	rsi
+	rdx
+	rcx
+	r8
+	r9			xmm5
+				xmm6
+				xmm7
+	
+	
+	
+	
+	;por redondeo
+	cvtss2si eax, xmm0  ; float en xmm0 a int en eax
+    cvtsi2sd xmm0, rax  ; long en rax a double en xmm0
+    cvtsi2sd xmm0, [x]  ; int en x a double en xmm0
+
+
+
+//registros que se usan cuando enteros (char, short, int, long) o flotantes (float, double).
+    extern void my_function(char a, short b, float c, double *d, double e) // a en rdi, b en rsi, c en xmm0, d en rdx, e en xmm1
+
+
+
+//ojo con vectores
+//Cuando se llama a la función asmFloatInnerProd(v1, v2, N, &ipAsm), 
+//los argumentos v1 y v2 son punteros a los vectores de flotantes que se pasan directamente a la función. 
+//Esto significa que la función recibe las direcciones de memoria donde están almacenados los vectores.
+//El argumento &ipAsm, por otro lado, es un puntero al flotante ipAsm.
+// El operador & se utiliza para obtener la dirección de memoria de una variable. 
+//En este caso, se está pasando la dirección de memoria de la variable ipAsm a la función. 
+//Esto permite que la función pueda modificar el valor de ipAsm directamente en la memoria.
+
+
+-lm     math.h
+-lrt     time.h?
+
+
+;nasm -f elf64 asmFloatNormTwo.asm -o asmFloatNormTwo.o -g      //crea el objet file del asembler?
+;gcc asmFloatNormTwo.o norma_2_main.c -o norma_2 -lm           //uno los 2 y saco mi ejecutable?
+;./norma_2                                                          //ejecuto
+
+
+
+//-fPIC: Es un parámetro que indica al compilador que genere código independiente de la posición. 
+//Esto es necesario para crear bibliotecas compartidas en algunas plataformas.-shared: 
+//Es un parámetro que indica al compilador que genere una biblioteca compartida en lugar de un archivo ejecutable.
+
+gcc -fPIC -shared libreria_norma_2.c asmFloatNormTwo.o -o libreria_normal_2.so -lm   //llamo la shared object que cree para usar en python
+
