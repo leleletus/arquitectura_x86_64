@@ -1,19 +1,22 @@
+//en C
+
 #include <stdio.h>
 #include <stdlib.h>
 
-double nota_del_final(int a, int b){
-    return (110-3*a-3*b)/4.0;
+int nota_del_final(int a, int b){
+    return (110 - 3*a - 3*b) / 4;
 }
 
-int main(int argc, char *argv[]){ //argc me da el tamaño 
-
-  if(argc !=3){ // analiza si se agregaron 2 argumentos (1+ 2)
-        printf("Error al ingresar argumentos\n");
-        exit(1);// termina el programa con codigo de error
+int main(int argc, char *argv[]){ //el primero cantidad(count) y el segundo los argumentos
+    
+  if(argc != 3){ //argc es 3 = 2 argumentos + name
+      printf("Debe ingresar exactamente 2 notas\r\n");
+      return 0;
   }
 
-  int x= atoi(argv[1]); //los valores pasados a partir del 1
-  int y= atoi(argv[2]); //atoi es de ascii to integer
-  printf("Me voy por: %.2f\n", nota_del_final(x,y) );
-  return 0;
+  int x = atoi(argv[1]); //guardamos en la primera
+  int y = atoi(argv[2]); //atoi convierte cadena a entero
+  //ya que lo recibe como ascii o utf-8 convertimos al numero
+
+  printf("Me voy por: %d", nota_del_final(x, y));
 }

@@ -1,3 +1,4 @@
+
 #!/bin/sh
 
 # a) el parametro que recibe que debe ser el codigo lo muestra

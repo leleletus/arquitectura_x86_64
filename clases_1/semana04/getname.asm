@@ -41,54 +41,76 @@
 
 ; SEGMENTO DE DATOS
 section .data
-	question db "What is your name? "
-	lenq equ $ - question
-	greet db "Hello, "
+	question db "Cual es tu nombre? " ;definet world de 16 bits
+	lenq equ $ - question ;restamos el current location $ con  el inicio de question
+	greet db "Hola, "
 	leng equ $ - greet
 
 ; SEGMENTO BSS (Block Started by Symbol)
 ; Reservamos 16 bytes para el nombre que sera ingresado 
 section .bss
-	name resb 16
+	name resb 16 ; reserva espacio para un valor no inicializado
 
 ; SEGMENTO DE TEXTO
 section .text
-	global _start
+	global _start   ; hace el _start visible al linkeador
 
 ;se pueden poner a 0 una variable con xor a ella misma <----------
-; SYS_WRITE
-_start: ;imprimo la pregunta intentar empezar las etiquetas con _
-	mov rax, 1
-	mov rdi, 1
-	mov rsi, question
-	mov rdx, lenq
-	syscall
+
+_start: ;definimos la etiqueta start como se establecio en .text la global
+
+; SYS_WRITE 
+	mov rax, 1 ;se mueve 1 al registro
+	;en este caso 1 es el número de llamada al sistema para sys_write
+	;que escribe datos en un descriptor de archivo
+	mov rdi, 1 ;1 es el descriptor de archivo para la salida estándar (stdout) "terminal"
+	mov rsi, question ; mueve la dirección de la cadena question al registro rsi. 
+	;Este es el búfer que se escribirá en stdout
+	;la cadena de texto a mostrar
+	mov rdx, lenq; mueve el valor de lenq al registro rdx. 
+	;Este es el número de bytes a escribir desde el búfer.
+	;la cantidad de bytes del texto a mostrar
+	syscall ;realiza una llamada al sistema. escribirá la cadena question en stdout "terminal"
 
 ; SYS_READ (leo)
-	mov rax, 0
-	mov rdi, 0
-	mov rsi, name
-	mov rdx, 16
-	syscall
+	mov rax, 0 ;es el número de llamada al sistema para sys_read,
+	;que lee datos de un descriptor de archivo.
+	mov rdi, 0 ;es el descriptor de archivo para la entrada estándar (stdin)
+	mov rsi, name ; búfer donde se almacenarán los datos leídos
+	;donde se guardara su nombre
+	mov rdx, 16 ;es el número máximo de bytes a leer
+	;la cantidad de bytes del texto a guardar
+	syscall ;llama al siste,a, leerá hasta 16 bytes de stdin y los almacenará en el búfer name
 
 ; SYS_WRITE (escribo el hola)
 	mov rax, 1
 	mov rdi, 1
-	mov rsi, greet
-	mov rdx, leng
-	syscall
+	; usamos igualmente los 2 anteriores
+	mov rsi, greet ;aqui ponemos el texto a escribir
+	mov rdx, leng ; el tamaño del texto
+	syscall ;llamada al sistema para que lo haga
 
 ; SYS_WRITE (escribo su nombre)
 	mov rax, 1
-	mov rdi, 1
-	mov rsi, name
-	mov rdx, 16
-	syscall
+	mov rdi, 1 ;los 2 primeros iguales
+	mov rsi, name ;ponemos el texto a escribir
+	mov rdx, 16 ;el tamaño del texto
+	syscall ;llamamos al sistema a que lo haga
 
 ; SYS_EXIT (salgo del programa)
-	mov rax, 60
-	mov rdi, 0
-	syscall
+	mov rax, 60 ;60 es el número de llamada al sistema para sys_exit, 
+	;que termina la ejecución del programa
+	mov rdi, 0 ;Este es el código de salida del programa
+	syscall ;terminará la ejecución del programa con un código de salida de 0
+
+
+;practicamente en rax se le dice el codigo a seguir al syscall,
+; 0 para escribir, 1 para leer y 60 para acabar el programa
+;rdi para leer u escrobor ogial que rax pero al usar salir del programa =0
+;rsi donde va la cadena de texto
+;rdx donde ba su tamaño
+;syscall para acabar
+
 
 
 

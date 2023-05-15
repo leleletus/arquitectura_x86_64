@@ -20,7 +20,7 @@ next:
 done:
     sqrtss xmm1, xmm1
     movss [rdx], xmm1
-
+    ret
 
 
 ;nasm -f elf64 asmFloatNormTwo.asm -o asmFloatNormTwo.o -g
