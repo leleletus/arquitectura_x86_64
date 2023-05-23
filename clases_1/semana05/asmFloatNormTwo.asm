@@ -24,7 +24,7 @@ done:
 
 
 
-;nasm -f elf64 asmFloatNormTwo.asm -o asmFloatNormTwo.o -g
+;
 ;gcc asmFloatNormTwo.o norma_2_main.c -o norma_2 -lm
 ;./norma_2
 

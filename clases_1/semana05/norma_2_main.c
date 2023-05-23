@@ -7,7 +7,7 @@ void cFloatNormTwo(float *v1, int N, float *n2);
 
 int main() {
 
-	float *v1, n2C, n2Asm; //declaro mis variabnles y arreglo v1
+	float *v1, n2C, n2Asm; //declaro mis variables y arreglo v1
 	int N = 1024; //el numero de elementos
 
 	v1 = malloc(N * sizeof(float)); //reservo espacio de memoria
