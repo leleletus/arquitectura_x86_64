@@ -33,7 +33,7 @@ if __name__ == '__main__':
                     data= client_socket.recv(SOCK_BUFFER) #recibimos del cliente dato tipo caracter, no string de 1024 bytes
                     if data:
                         #print(f"Recibi \"{data.decode('utf-8')}\" de {client_address}") #mostramos lo recibido y de quien
-                        matrices_unidas = pickle.loads(data) #paso bytes anuymeros
+                        matrices_unidas = pickle.loads(data) #paso bytes anumeros
                         matriz1,matriz2 = np.split(matrices_unidas, [2])
                         resultado= np.dot(matriz1,matriz2) #calculamos lo pedido
                         

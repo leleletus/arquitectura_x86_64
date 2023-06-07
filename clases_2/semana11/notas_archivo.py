@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     filas = contenido.split("\n")
     
-    alumnos = list()
+    alumnos = list() #me servira
     for i in range(1, len(filas)):
         fila = filas[i].split(",")
         nota_alumno = procesa_fila(fila)
