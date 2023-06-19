@@ -1,3 +1,4 @@
+%%file funcion_asm.asm
 
 ; SEGMENTO DE DATOS
 ;como usaremos como funcion externa no sera necesario

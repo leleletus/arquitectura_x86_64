@@ -12,7 +12,7 @@
 ; agregamos la bandera -g para mas info al depurar en gdb
 
 
-;para hacer permanetnte el disassemble en modo inte:
+;para hacer permanente el disassemble en modo inte:
 ;  echo "set disassembly-flavor intel" >> ~/.gdbinit
 ;  cat  ~/.gdbinit
 ;  show disassembly-flavor                muentra en cual está, dentro de gdb 
