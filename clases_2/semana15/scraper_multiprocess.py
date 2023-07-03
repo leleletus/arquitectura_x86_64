@@ -33,3 +33,8 @@ if __name__ == "__main__":
     fin = time.perf_counter()
 
     print(f"Tiempo de ejecucion multiproceso: {fin - inicio} segundos")
+
+#pip install memory_profiler
+#sin -M para los demas, si o si el multiprocess necesita -M
+# python -m mprof run -M scraper_multiprocess.py
+# python -m mprof plot
