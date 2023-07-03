@@ -21,7 +21,7 @@ def potencia(n: int, rlist: list[int],  div: int = 1):
 
 if __name__ == '__main__':
     v = 100_000
-    manager = Manager()
+    manager = Manager() # crea lista compartida 
     return_list = manager.list()
     p1 = Process(target=potencia, args=(v, return_list, 2))
     p2 = Process(target=potencia, args=(v, return_list, 2))

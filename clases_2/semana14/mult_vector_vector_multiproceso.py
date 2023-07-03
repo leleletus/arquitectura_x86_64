@@ -30,7 +30,7 @@ def mult_vector_vector(x, y):
     return suma
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':#
     resultado = list()
 
     mat_M = np.random.randint(100, size=(M,N))
@@ -38,11 +38,38 @@ if __name__ == '__main__':
 
     inicio = time.perf_counter()
     args = zip(mat_M, repeat(vector_A))
-    p = Pool(processes=cpu_count())
-    resultado = p.starmap(mult_vector_vector, args)
+    p = Pool(processes=cpu_count()) #devuelve el numero de nucleos (en mi caso 32)
+    #crea objeto ppoll que controla yb grupo de procesos de trabajo al que se pueden
+    #enviar trabajos. el parametro processes especifica el numero de procesos de trabajo que se usaran
+    #si este es None , utiliza el numero devuelto por os.cpu_count()
+
+    resultado = p.starmap(mult_vector_vector, args) #metodo de Pool que permite
+    #"aplicar una funcion a multiples argumentos en paralelo"
+    #starmap toma como argumentos una función y un iterable de iterables,
+    #  donde cada iterable interno contiene los argumentos para una llamada
+    #  a la función. El resultado es un iterable que contiene el resultado
+    #  de aplicar la función a cada conjunto de argumentos
+    #se está aplicando la función mult_vector_vector a cada conjunto de 
+    # argumentos en args en paralelo y almacenando el resultado en la variable resultado
     p.close()
     p.join()
+
+    #p.close() le indica al objeto Pool que no acepte más trabajosp.
+    # join() le indica al objeto Pool que espere hasta que todos los trabajos
+    #  hayan finalizado y luego salga, limpiando efectivamente el grupo de procesos
     fin = time.perf_counter()
 
     print(f"Tiempo de ejecucion multiproceso: {fin - inicio} segundos")
+
+#compartir datos entre diferentes procesos, puedes utilizar un objeto Manager del módulo multiprocessing. Un objeto Manager permite crear y administrar objetos compartidos entre procesos, como listas, diccionarios y valores.
+
+#Para utilizar un objeto Manager, primero debes crear una instancia del mismo utilizando Manager(). Luego puedes utilizar los métodos del objeto Manager para crear objetos compartidos, como list(), dict() y Value().
+
+#Por ejemplo, para crear una lista compartida entre procesos, puedes hacer lo siguiente:
+
+#from multiprocessing import Manager
+
+#manager = Manager()
+#shared_list = manager.list()
+#Luego puedes pasar la lista compartida como argumento a los procesos y modificarla dentro de ellos. Los cambios realizados en la lista compartida serán visibles para todos los procesos que tengan acceso a ella.
 
